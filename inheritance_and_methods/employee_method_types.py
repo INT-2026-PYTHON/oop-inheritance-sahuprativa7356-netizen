@@ -96,3 +96,64 @@ is_valid_salary("abc")  -> False
 =================================================
 
 """
+class Employee:
+    # Class attributes
+    company = "Acme Corp"
+    raise_pct = 5
+
+    def __init__(self, name, salary):
+        self.name = name
+        self.salary = salary
+
+    # Instance method
+    def apply_raise(self):
+        self.salary += self.salary * Employee.raise_pct / 100
+
+    # Class method
+    @classmethod
+    def set_raise_percentage(cls, new_pct):
+        cls.raise_pct = new_pct
+
+    # Alternate constructor
+    @classmethod
+    def from_string(cls, csv_line):
+        name, salary = csv_line.split(",")
+        return cls(name, float(salary))
+
+    # Static method
+    @staticmethod
+    def is_valid_salary(amount):
+        return isinstance(amount, (int, float)) and amount > 0
+
+
+# Driver Code
+
+# Create employees using __init__
+e1 = Employee("Alice", 100000)
+e2 = Employee("Bob", 80000)
+
+# Create employee using class method (alternate constructor)
+e3 = Employee.from_string("Carol,75000")
+
+# Apply first raise (5%)
+e1.apply_raise()
+e2.apply_raise()
+e3.apply_raise()
+
+# Change raise percentage for all employees
+Employee.set_raise_percentage(10)
+
+# Apply second raise (10%)
+e1.apply_raise()
+e2.apply_raise()
+e3.apply_raise()
+
+# Print employee details
+print(f"{e1.name} -> {e1.salary}")
+print(f"{e2.name} -> {e2.salary}")
+print(f"{e3.name} -> {e3.salary}")
+
+# Test static method
+print(f"is_valid_salary(50000)  -> {Employee.is_valid_salary(50000)}")
+print(f"is_valid_salary(-100)   -> {Employee.is_valid_salary(-100)}")
+print(f'is_valid_salary("abc")  -> {Employee.is_valid_salary("abc")}')
